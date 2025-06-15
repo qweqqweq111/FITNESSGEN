@@ -40,6 +40,211 @@ const HomePage = () => {
     useState<WorkoutRoutineData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  // Exercise image mapping for proper exercise illustrations
+  const exerciseImageMap: Record<string, string> = {
+    // Push exercises
+    "Push-ups":
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&q=80",
+    "Decline Push-ups":
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&q=80",
+    "Diamond Push-ups":
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&q=80",
+    "Pike Push-ups":
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&q=80",
+
+    // Pull exercises
+    "Pull-ups":
+      "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&q=80",
+    "Chin-ups":
+      "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&q=80",
+    "Inverted Rows":
+      "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&q=80",
+
+    // Squats and leg exercises
+    "Bodyweight Squats":
+      "https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=400&q=80",
+    "Dumbbell Squats":
+      "https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=400&q=80",
+    "Barbell Squats":
+      "https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=400&q=80",
+    "Banded Squats":
+      "https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=400&q=80",
+    "Jump Squats":
+      "https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=400&q=80",
+
+    // Lunges
+    Lunges:
+      "https://images.unsplash.com/photo-1566241440091-ec10de8db2e1?w=400&q=80",
+    "Dumbbell Lunges":
+      "https://images.unsplash.com/photo-1566241440091-ec10de8db2e1?w=400&q=80",
+    "Barbell Lunges":
+      "https://images.unsplash.com/photo-1566241440091-ec10de8db2e1?w=400&q=80",
+
+    // Deadlifts
+    Deadlifts:
+      "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=400&q=80",
+    "Barbell Deadlifts":
+      "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=400&q=80",
+    "Dumbbell Romanian Deadlifts":
+      "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=400&q=80",
+    "Barbell Romanian Deadlifts":
+      "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=400&q=80",
+
+    // Bench Press
+    "Bench Press":
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&q=80",
+    "Incline Bench Press":
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&q=80",
+    "Decline Bench Press":
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&q=80",
+    "Close-grip Bench Press":
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&q=80",
+
+    // Dumbbell exercises
+    "Dumbbell Chest Press":
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&q=80",
+    "Dumbbell Flyes":
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&q=80",
+    "Incline Dumbbell Press":
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&q=80",
+    "Dumbbell Rows":
+      "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&q=80",
+    "Dumbbell Pullovers":
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&q=80",
+    "Dumbbell Shoulder Press":
+      "https://images.unsplash.com/photo-1594737625785-a6cbdabd333c?w=400&q=80",
+    "Dumbbell Bicep Curls":
+      "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=400&q=80",
+    "Bicep Curls":
+      "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=400&q=80",
+    "Hammer Curls":
+      "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=400&q=80",
+    "Dumbbell Thrusters":
+      "https://images.unsplash.com/photo-1594737625785-a6cbdabd333c?w=400&q=80",
+    "Dumbbell Clean and Press":
+      "https://images.unsplash.com/photo-1594737625785-a6cbdabd333c?w=400&q=80",
+    "Dumbbell Calf Raises":
+      "https://images.unsplash.com/photo-1566241440091-ec10de8db2e1?w=400&q=80",
+    "Dumbbell Russian Twists":
+      "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400&q=80",
+    "Dumbbell Side Bends":
+      "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400&q=80",
+
+    // Barbell exercises
+    "Barbell Rows":
+      "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&q=80",
+    "Barbell Curls":
+      "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=400&q=80",
+    "Overhead Press":
+      "https://images.unsplash.com/photo-1594737625785-a6cbdabd333c?w=400&q=80",
+    "Upright Rows":
+      "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&q=80",
+    "Clean and Jerk":
+      "https://images.unsplash.com/photo-1594737625785-a6cbdabd333c?w=400&q=80",
+    "Barbell Hip Thrusts":
+      "https://images.unsplash.com/photo-1566241440091-ec10de8db2e1?w=400&q=80",
+    "Barbell Calf Raises":
+      "https://images.unsplash.com/photo-1566241440091-ec10de8db2e1?w=400&q=80",
+
+    // Core exercises
+    Plank:
+      "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400&q=80",
+    Crunches:
+      "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400&q=80",
+    "Mountain Climbers":
+      "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400&q=80",
+    "Russian Twists":
+      "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400&q=80",
+
+    // Other exercises
+    "Tricep Dips":
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&q=80",
+    "Tricep Kickbacks":
+      "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=400&q=80",
+    "Overhead Tricep Extensions":
+      "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=400&q=80",
+    "Skull Crushers":
+      "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=400&q=80",
+    "Lateral Raises":
+      "https://images.unsplash.com/photo-1594737625785-a6cbdabd333c?w=400&q=80",
+    "Front Raises":
+      "https://images.unsplash.com/photo-1594737625785-a6cbdabd333c?w=400&q=80",
+    "Glute Bridges":
+      "https://images.unsplash.com/photo-1566241440091-ec10de8db2e1?w=400&q=80",
+    "Calf Raises":
+      "https://images.unsplash.com/photo-1566241440091-ec10de8db2e1?w=400&q=80",
+    "Superman Hold":
+      "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400&q=80",
+    Burpees:
+      "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400&q=80",
+    "Handstand Hold (against wall)":
+      "https://images.unsplash.com/photo-1594737625785-a6cbdabd333c?w=400&q=80",
+    "Hanging Leg Raises":
+      "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400&q=80",
+    "Renegade Rows":
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&q=80",
+
+    // Resistance band exercises
+    "Resistance Band Chest Press":
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&q=80",
+    "Resistance Band Flyes":
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&q=80",
+    "Resistance Band Rows":
+      "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&q=80",
+    "Resistance Band Pull-aparts":
+      "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&q=80",
+    "Banded Chest Press":
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&q=80",
+    "Banded Rows":
+      "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&q=80",
+    "Banded Bicep Curls":
+      "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=400&q=80",
+    "Banded Tricep Extensions":
+      "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=400&q=80",
+    "Banded Tricep Pushdowns":
+      "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=400&q=80",
+    "Banded Hammer Curls":
+      "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=400&q=80",
+    "Banded Shoulder Press":
+      "https://images.unsplash.com/photo-1594737625785-a6cbdabd333c?w=400&q=80",
+    "Banded Lateral Raises":
+      "https://images.unsplash.com/photo-1594737625785-a6cbdabd333c?w=400&q=80",
+    "Banded Front Raises":
+      "https://images.unsplash.com/photo-1594737625785-a6cbdabd333c?w=400&q=80",
+    "Banded Lateral Walks":
+      "https://images.unsplash.com/photo-1566241440091-ec10de8db2e1?w=400&q=80",
+    "Banded Glute Bridges":
+      "https://images.unsplash.com/photo-1566241440091-ec10de8db2e1?w=400&q=80",
+    "Banded Pallof Press":
+      "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400&q=80",
+    "Banded Rotations":
+      "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400&q=80",
+    "Banded Squats to Overhead Press":
+      "https://images.unsplash.com/photo-1594737625785-a6cbdabd333c?w=400&q=80",
+    "Banded Rows to Tricep Extension":
+      "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&q=80",
+    "Banded Jumping Jacks":
+      "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400&q=80",
+    "Banded Leg Press":
+      "https://images.unsplash.com/photo-1566241440091-ec10de8db2e1?w=400&q=80",
+
+    // Cable machine exercises
+    "Lat Pulldowns":
+      "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&q=80",
+    "Cable Rows":
+      "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&q=80",
+    "Face Pulls":
+      "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&q=80",
+  };
+
+  // Function to get exercise image
+  const getExerciseImage = (exerciseName: string): string => {
+    return (
+      exerciseImageMap[exerciseName] ||
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&q=80"
+    );
+  };
+
   // Exercise database by muscle group and equipment
   const exerciseDatabase = {
     chest: {
@@ -525,7 +730,7 @@ const HomePage = () => {
             sets: exercise.sets,
             reps: exercise.reps,
             rest: exercise.rest,
-            illustration: `https://api.dicebear.com/7.x/avataaars/svg?seed=${exercise.name.toLowerCase().replace(/\s+/g, "")}_${formData.fitnessLevel}`,
+            illustration: getExerciseImage(exercise.name),
             muscleGroup: muscleGroupMap[muscleGroup],
             equipment:
               equipment
@@ -543,7 +748,7 @@ const HomePage = () => {
       });
 
       // If we don't have enough exercises, add some from other muscle groups
-      while (generatedExercises.length < 5) {
+      while (generatedExercises.length < 6) {
         // Pick a random muscle group and equipment
         const muscleGroups = Object.keys(exerciseDatabase);
         const randomMuscleGroup =
@@ -575,7 +780,7 @@ const HomePage = () => {
               sets: randomExercise.sets,
               reps: randomExercise.reps,
               rest: randomExercise.rest,
-              illustration: `https://api.dicebear.com/7.x/avataaars/svg?seed=${randomExercise.name.toLowerCase().replace(/\s+/g, "")}_${formData.fitnessLevel}`,
+              illustration: getExerciseImage(randomExercise.name),
               muscleGroup: muscleGroupMap[randomMuscleGroup],
               equipment: selectedEquipment.replace("_", " "),
             });
@@ -677,25 +882,6 @@ const HomePage = () => {
                 level, available equipment, and target goals. Get started in
                 under 60 seconds.
               </motion.p>
-              <motion.div
-                className="mt-8 flex flex-wrap justify-center gap-4 text-sm text-gray-500"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 }}
-              >
-                <div className="flex items-center">
-                  <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
-                  No signup required
-                </div>
-                <div className="flex items-center">
-                  <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
-                  Instant generation
-                </div>
-                <div className="flex items-center">
-                  <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
-                  Print & save friendly
-                </div>
-              </motion.div>
             </div>
           )}
 
@@ -832,10 +1018,6 @@ const HomePage = () => {
                 Contact
               </a>
             </div>
-            <p>
-              © {new Date().getFullYear()} FitGen ProMax. Crafted with ❤️ for
-              fitness enthusiasts.
-            </p>
           </div>
         </motion.div>
       </div>
